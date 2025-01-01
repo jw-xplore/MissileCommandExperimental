@@ -5,11 +5,12 @@
 #include <typeinfo>
 #include <string>
 
+#include "Missile.h"
+#include "Constants.h"
+#include "Reticle.h"
+
 // Forward declarations
 class GameObject;
-
-
-
 
 // GameStateManager keeps track of the game state
 class GameStateManager
@@ -20,9 +21,6 @@ public:
 
 	void Update(float elapsedTime);
 	
-	//GameObject* GetFirstGameObject();
-	//std::vector<GameObject*> GetGameObjects(); // Should be removed later
-
 	template<class T>
 	std::vector<GameObject*> GetGameObjectsOfType() const;
 
@@ -35,7 +33,7 @@ public:
 	// Add a game object to the game state. This makes the game object active and automatically updated.
 	//void AddGameObject(GameObject* gameObject);
 
-	void AddGameObject(GameObject* gameObject);
+	void AddGameObject(GameObject* gameObject, EObjectType type);
 
 	// Removes a game object from the list of active objects. This deletes the object, and returns true or false if it was successful or not.
 	bool RemoveGameObject(GameObject* gameObject);
@@ -45,6 +43,10 @@ public:
 	// Destorys all game objects and wipes the game clean.
 	void ClearGame();
 
+	//void UpdateMissiles(std::vector<Missile*> missiles, float elapsedTime);
+
+	//void SpawnMissile();
+
 private:
 	int worldWidth;
 	int worldHeight;
@@ -53,10 +55,30 @@ private:
 	float timeBetweenHostileMissiles;
 	float missileSpeed;
 
-	const float groundLevel = 16.0f;
-
 	// Map of GameObject vectors defined by class type
 	std::map<std::type_index, std::vector<GameObject*>> gameObjects;
+
+	std::map<EObjectType, std::vector<GameObject*>> m_GameObjects;
+	std::vector<GameObject*>* missiles;
+	//std::vector<GameObject*>* missiles;
+
+
+	// Functions matching
+	//void (*simulate_ptr) (std::vector<GameObject> gameObjects, float elapsedTime);
+
+	// Update 
+	using SimulateFnc = void(*)(std::vector<GameObject*> gameObjects, float elapsedTime);
+
+	const std::map<EObjectType, SimulateFnc> simulateFncMap = {
+		{ EObjectType::RETICLE, &Reticle::simulate },
+	};
+
+	// Draw
+	using DrawFnc = void(*)(std::vector<GameObject*> gameObjects);
+
+	const std::map<EObjectType, DrawFnc> drawFncMap = {
+		{ EObjectType::RETICLE, &Reticle::draw },
+	};
 };
 
 

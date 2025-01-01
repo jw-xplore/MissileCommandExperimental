@@ -1,3 +1,4 @@
+/*
 #include "Missile.h"
 #include "Explosion.h"
 #include "GameStateManager.h"
@@ -27,6 +28,7 @@ void Missile::Draw()
 	* Should be define in constants
 	* Also this is repeated in Explosion.cpp Draw()
 	*/
+/*
 	const Play::Colour colours[4] = {
 		Play::cWhite,
 		Play::cRed,
@@ -42,9 +44,11 @@ void Missile::Draw()
 	// Draw Target
 	Play::DrawCircle(this->target, 2, this->colour);
 }
+*/
 
-void Missile::Simulate(float elapsedTime)
-{
+//void Missile::Simulate(float elapsedTime)
+//{
+	/*
 	this->distanceTravelled += this->speed * elapsedTime;
 	Play::Vector2D direction = this->GetTravellingDirection();
 	Play::Point2D currentPosition = this->origin + direction * distanceTravelled;
@@ -58,8 +62,10 @@ void Missile::Simulate(float elapsedTime)
 		// Destroy this object
 		this->ScheduleDelete();
 	}
-}
+	*/
+//}
 
+/*
 Play::Vector2D Missile::GetTravellingDirection() const
 {
 	Play::Vector2D direction = (this->target - this->origin);
@@ -71,3 +77,4 @@ float Missile::GetDistanceFromOriginToTarget() const
 {
 	return (this->target - this->origin).Length();
 }
+*/

@@ -1,5 +1,6 @@
 #include "Structure.h"
 
+/*
 Structure::Structure() : Destroyable(100)
 {
 	this->rubbleSpriteId = Play::GetSpriteId("rubble");
@@ -27,3 +28,4 @@ void Structure::SetStructureSprite(const char* spriteName)
 {
 	this->structureSpriteId = Play::GetSpriteId(spriteName);
 }
+*/

@@ -2,6 +2,7 @@
 #include "Missile.h"
 #include "GameStateManager.h"
 
+/*
 MissileBase::MissileBase() :
 	maxMissiles(10),
 	missileCount(maxMissiles),
@@ -44,8 +45,9 @@ void MissileBase::FireMissile(Play::Point2D target)
 	if (this->missileCount > 0)
 	{
 		Missile* missile = new Missile(this->GetPosition(), target, Play::cBlue, this->missileSpeed);
-		this->gameStateManager->AddGameObject(missile);
+		this->gameStateManager->AddGameObject(missile, EObjectType::MISSILE);
 		this->missileCount--;
 		Play::PlayAudio("Fire");
 	}
 }
+*/

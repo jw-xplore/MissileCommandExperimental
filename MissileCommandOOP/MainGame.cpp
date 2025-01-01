@@ -2,10 +2,7 @@
 #include "Play.h"
 #include "GameStateManager.h"
 #include "MissileBase.h"
-
-int DISPLAY_WIDTH = 240;
-int DISPLAY_HEIGHT = 160;
-int DISPLAY_SCALE = 4;
+#include "Constants.h"
 
 GameStateManager state;
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Destroyable.h"
 
+/*
 class Missile : public Destroyable
 {
 public:
@@ -22,4 +23,5 @@ private:
 	int alternateColour;
 	float speed;
 };
+*/
 

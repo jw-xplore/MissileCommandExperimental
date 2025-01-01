@@ -3,8 +3,6 @@
 #include "GameObject.h"
 #include "City.h"
 #include "MissileBase.h"
-#include "Missile.h"
-#include "Reticle.h"
 
 GameStateManager::GameStateManager() : worldHeight(100), worldWidth(100)
 {
@@ -27,53 +25,36 @@ void GameStateManager::Update(float elapsedTime)
 	}
 
 	// Ground draw
-	Play::DrawRect(Play::Point2D(0, 0), Play::Point2D(this->worldWidth, groundLevel), Play::cYellow, true);
+	Play::DrawRect(Play::Point2D(0, 0), Play::Point2D(this->worldWidth, GROUND_LEVEL), Play::cYellow, true);
 
-	// Spawn missiles 
-	this->timeSinceLastHostileMissile += elapsedTime;
-	// First, spawn incoming hostile missiles if necessary
-	if (this->timeSinceLastHostileMissile >= this->timeBetweenHostileMissiles)
-	{
-		for (size_t i = 0; i < 1; i++)
-		{
-			/* //////////////////////////////////
-			* DOD:
-			* Use constants??
-			*/
-
-			Play::Point2D origin = Play::Point2D(Play::RandomRoll(this->worldWidth), this->worldHeight);
-			Play::Point2D target = Play::Point2D(Play::RandomRoll(this->worldWidth), this->groundLevel);
-			Missile* missile = new Missile(origin, target, Play::cRed, this->missileSpeed);
-			this->AddGameObject(missile);
-		}
-		this->timeSinceLastHostileMissile = 0;
-		this->timeBetweenHostileMissiles = std::fmaxf(0.005f, this->timeBetweenHostileMissiles - 0.035f);
-		this->missileSpeed += 0.5f;
-	}
-
-	// simulate all game objects
-	for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it) 
+	// Simulate
+	for (auto it = m_GameObjects.begin(); it != m_GameObjects.end(); ++it)
 	{
 		// Get group
-		std::vector typeObjects = it->second;
+		std::vector<GameObject*> typeObjects = it->second;
 		int size = typeObjects.size();
 
-		// Simulate group
+		// Handle delete
 		for (int i = size - 1; i >= 0; i--)
 		{
-			// Delete
 			if (typeObjects[i]->scheduledDelete)
 			{
 				delete it->second[i];
 				it->second.erase(it->second.begin() + i);
 				continue;
 			}
-
-			typeObjects[i]->Simulate(elapsedTime);
-
-			// Draw
-			typeObjects[i]->Draw();
 		}
+
+		// Simulate call
+		//this->simulateFncMap.at(it->first)(typeObjects, elapsedTime);
+	}
+
+	// Simulate and draw
+	for (auto it = m_GameObjects.begin(); it != m_GameObjects.end(); ++it)
+	{
+		std::vector<GameObject*> typeObjects = it->second;
+		this->simulateFncMap.at(it->first)(typeObjects, elapsedTime);
+		this->drawFncMap.at(it->first)(typeObjects);
 	}
 }
 
@@ -84,18 +65,16 @@ void GameStateManager::SetWorldSize(int width, int height)
 }
 
 // Add object to array with specific class type of GameObject
-void GameStateManager::AddGameObject(GameObject* gameObject)
+void GameStateManager::AddGameObject(GameObject* gameObject, EObjectType type)
 {
-	std::type_index type = std::type_index(typeid(*gameObject));
-	this->gameObjects[type].push_back(gameObject); // 
+	this->m_GameObjects[type].push_back(gameObject);
 	gameObject->gameStateManager = this;
 }
 
 bool GameStateManager::RemoveGameObject(GameObject* gameObject)
 {
 	// Get objects of type
-	std::type_index type = std::type_index(typeid(*gameObject));
-	std::vector typeObjects = this->gameObjects[type];
+	std::vector typeObjects = this->m_GameObjects[gameObject->GetType()];
 
 	for (int i = typeObjects.size() - 1; i >= 0; i--)
 	{
@@ -132,6 +111,7 @@ void GameStateManager::ClearGame()
 
 void GameStateManager::NewGame()
 {
+	/*
 	// Reticle
 	Reticle* reticle = new Reticle();
 	reticle->SetPosition(Play::Input::GetMousePos());
@@ -143,7 +123,7 @@ void GameStateManager::NewGame()
 	for (size_t i = 0; i < 6; i++)
 	{
 		City* city = new City();
-		city->SetPosition(Play::Point2D(float(i) * offset + offset, groundLevel));
+		city->SetPosition(Play::Point2D(float(i) * offset + offset, GROUND_LEVEL));
 		this->AddGameObject(city);
 	}
 
@@ -153,7 +133,54 @@ void GameStateManager::NewGame()
 	for (size_t i = 0; i < 3; i++)
 	{
 		MissileBase* base = new MissileBase();
-		base->SetPosition(Play::Point2D((offset * i * 2.0f) + offset * 1.4f, groundLevel));
+		base->SetPosition(Play::Point2D((offset * i * 2.0f) + offset * 1.4f, GROUND_LEVEL));
 		this->AddGameObject(base);
 	}
+	*/
+
+	// Reticle
+	GameObject* reticle = new GameObject(EObjectType::RETICLE);
+	this->AddGameObject(reticle, EObjectType::RETICLE);
 }
+
+// Missiles management
+
+/*
+void GameStateManager::UpdateMissiles(std::vector<Missile*> missiles, float elapsedTime)
+{
+	for (int i = 0; i < missiles.size(); i++)
+	{
+		missiles[i]->distanceTravelled += missiles[i]->speed * elapsedTime;
+		Play::Point2D currentPosition = missiles[i]->origin + missiles[i]->GetTravellingDirection() * missiles[i]->distanceTravelled;
+		missiles[i]->SetPosition(currentPosition);
+
+		if (missiles[i]->distanceTravelled >= missiles[i]->GetDistanceFromOriginToTarget() || missiles[i]->IsDestroyed())
+		{
+			Explosion* explosion = new Explosion(missiles[i]->GetPosition());
+			this->AddGameObject(explosion);
+
+			// Destroy this object
+			missiles[i]->ScheduleDelete();
+		}
+	}
+}
+*/
+
+/*
+void GameStateManager::SpawnMissile()
+{
+	// Create missile
+	Play::Point2D origin = Play::Point2D(Play::RandomRoll(this->worldWidth), this->worldHeight);
+	Play::Point2D target = Play::Point2D(Play::RandomRoll(this->worldWidth), this->groundLevel);
+	Missile* missile = new Missile(origin, target, Play::cRed, this->missileSpeed);
+	this->AddGameObject(missile);
+
+	// Create transformation entry
+
+	// Update game state
+	this->timeSinceLastHostileMissile = 0;
+	this->timeBetweenHostileMissiles = std::fmaxf(0.005f, this->timeBetweenHostileMissiles - 0.035f);
+	this->missileSpeed += 0.5f;
+}
+
+*/

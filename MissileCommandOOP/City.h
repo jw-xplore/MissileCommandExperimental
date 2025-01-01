@@ -7,6 +7,7 @@
 * City could be a structure/destroyable, which has special sprite and is maybe under separated vector/enum type
 */
 
+/*
 class City : public Structure
 {
 public:
@@ -15,3 +16,4 @@ public:
 private:
 
 };
+*/

@@ -3,6 +3,7 @@
 #include "Destroyable.h"
 #include <vector>
 
+/*
 Explosion::Explosion(Play::Point2D position) :
 	hasExploded(false),
 	maxRadius(16.0f),
@@ -12,6 +13,7 @@ Explosion::Explosion(Play::Point2D position) :
 	this->SetPosition(position);
 }
 
+*/
 
 /* //////////////////////////////////
 * DOD:
@@ -19,6 +21,7 @@ Explosion::Explosion(Play::Point2D position) :
 * Should be trigger from other object on collision
 */
 
+/*
 void Explosion::Simulate(float elapsedTime)
 {
 	if (!this->hasExploded)
@@ -36,13 +39,17 @@ void Explosion::Simulate(float elapsedTime)
 
 
 }
+*/
 
-void Explosion::Draw()
-{
-	/* //////////////////////////////////
+
+/* //////////////////////////////////
 	* DOD:
 	* Define this in constants?
 	*/
+
+/*
+void Explosion::Draw()
+{
 	const Play::Colour colours[4] = {
 		Play::cWhite,
 		Play::cRed,
@@ -55,16 +62,19 @@ void Explosion::Draw()
 
 	Play::DrawCircle(this->position, this->currentRadius, colours[colourIndex]);
 }
+*/
 
-void Explosion::Explode()
-{
-	Play::PlayAudio("Explode");
-
-	/* //////////////////////////////////
+/* //////////////////////////////////
 	* DOD:
 	* Still not good enough
 	* Change to more explicit implementation handled by manager??
 	*/
+
+/*
+void Explosion::Explode()
+{
+	Play::PlayAudio("Explode");
+
 
 	// Get destroyables and setup variables
 	auto destroyables = gameStateManager->GetGameObjectsOfRelatedType<Destroyable>();
@@ -98,3 +108,4 @@ void Explosion::Explode()
 
 	this->hasExploded = true;
 }
+*/

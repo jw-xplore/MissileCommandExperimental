@@ -1,8 +1,26 @@
 #include "Reticle.h"
-#include "Missile.h"
-#include "MissileBase.h"
-#include "GameStateManager.h"
+//#include "Missile.h"
+//#include "MissileBase.h"
+//#include "GameStateManager.h"
 
+void Reticle::simulate(vector<GameObject*> reticles, float elapsedTime)
+{
+	reticles[0]->SetPosition(Input::GetMousePos());
+}
+
+void Reticle::draw(vector<GameObject*> reticles)
+{
+	const int reticleHalfSize = 2; // half (size - 1)
+	DrawLine(reticles[0]->GetPosition() + Vector2D(-reticleHalfSize, 0), reticles[0]->GetPosition() + Vector2D(reticleHalfSize, 0), cGreen);
+	DrawLine(reticles[0]->GetPosition() + Vector2D(0, reticleHalfSize), reticles[0]->GetPosition() + Vector2D(0, -reticleHalfSize), cGreen);
+}
+
+GameObject* Reticle::getClosestMissileBase()
+{
+	return nullptr;
+}
+
+/*
 void Reticle::Simulate(float elapsedTime)
 {
 	this->SetPosition(Play::Input::GetMousePos());
@@ -37,7 +55,7 @@ MissileBase* Reticle::GetClosestMissileBase(Play::Point2D targetPosition) const
 	* 
 	* Also closes based could be by default first from bases list
 	*/
-
+/*
 	MissileBase* closestBase = nullptr;
 	float closestDistance = 9999999999.0f;
 
@@ -47,7 +65,7 @@ MissileBase* Reticle::GetClosestMissileBase(Play::Point2D targetPosition) const
 	* Change to more explicit implementation handled by manager
 	* Maybe list of bases could be provided as parameter
 	*/
-
+/*
 	//std::vector<GameObject*> gameObjects = gameStateManager->GetGameObjects();
 	auto bases = gameStateManager->GetGameObjectsOfType<MissileBase>();
 
@@ -67,3 +85,4 @@ MissileBase* Reticle::GetClosestMissileBase(Play::Point2D targetPosition) const
 
 	return closestBase;
 }
+*/

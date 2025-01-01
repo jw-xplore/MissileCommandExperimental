@@ -6,6 +6,7 @@
 * Not sure, but maybe even structure could be removed
 */
 
+/*
 class Structure : public Destroyable
 {
 public:
@@ -20,3 +21,4 @@ private:
 	int rubbleSpriteId;
 	int structureSpriteId;
 };
+*/

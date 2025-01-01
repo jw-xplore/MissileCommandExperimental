@@ -1,5 +1,6 @@
 #pragma once
 #include "Play.h"
+#include "Constants.h"
 
 class GameStateManager;
 
@@ -7,8 +8,8 @@ class GameStateManager;
 class GameObject
 {
 public:
-	GameObject();
-	virtual ~GameObject();
+	GameObject(EObjectType type);
+	~GameObject();
 
 	Play::Point2D GetPosition() const;
 
@@ -17,15 +18,19 @@ public:
 	// call to schedule the object for deletion.
 	void ScheduleDelete();
 
+	EObjectType GetType();
+
+	friend class GameStateManager;
+
 protected:
 	friend class GameStateManager;
 
 	// This is executed by the game state manager once per frame. Override in subclass.
-	virtual void Simulate(float elapsedTime);
+	//virtual void Simulate(float elapsedTime);
 
 	// This is executed by the game state manager once per frame, after simulate. Override in subclass.
 	// pure virtual makes this class an abstract class!
-	virtual void Draw() = 0; 
+	//virtual void Draw() = 0; 
 
 	/* //////////////////////////////////
 	* DOD:
@@ -37,6 +42,8 @@ protected:
 
 	// set to true if the object should be deleted by the game state manager when time is right
 	bool scheduledDelete;
+
+	EObjectType type;
 
 	// All active game objects are in a linked list structure, managed by the game object manager.
 	//GameObject* nextActiveGameObject;

@@ -1,5 +1,6 @@
-#include "Destroyable.h"
+//#include "Destroyable.h"
 
+/*
 Destroyable::Destroyable(int health) : health(health)
 {
 	// empty
@@ -22,3 +23,4 @@ bool Destroyable::IsDestroyed() const
 {
 	return health <= 0;
 }
+*/

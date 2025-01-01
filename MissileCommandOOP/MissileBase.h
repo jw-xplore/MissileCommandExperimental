@@ -1,6 +1,7 @@
 #pragma once
 #include "Structure.h"
 
+/*
 class MissileBase : public Structure
 {
 public:
@@ -19,4 +20,5 @@ private:
 	float timeSinceReload;
 	float reloadTime;
 };
+*/
 
