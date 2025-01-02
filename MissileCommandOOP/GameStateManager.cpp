@@ -74,6 +74,13 @@ void GameStateManager::Update(float elapsedTime)
 			break;
 		}
 
+		case EObjectType::MISSILE:
+		{
+			Missile::simulate(typeObjects, &missileComponents, elapsedTime);
+			Missile::draw(&missileComponents);
+			break;
+		}
+
 		}
 
 		//this->simulateFncMap.at(it->first)(typeObjects, elapsedTime);
@@ -210,6 +217,15 @@ void GameStateManager::AddMissileBaseComponent(GameObject* gameObject)
 std::map<int, MissileBase::MissileBaseComponent> GameStateManager::GetMissileBaseComponets()
 {
 	return missileBaseComponents;
+}
+
+Missile::MissileComponent* GameStateManager::AddMissileComponent(GameObject* gameObject)
+{
+	using namespace Missile;
+	MissileComponent missile;
+	missileComponents[gameObject->GetId()] = missile;
+
+	return &missileComponents[gameObject->GetId()];
 }
 
 // Missiles management

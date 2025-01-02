@@ -3,13 +3,51 @@
 #include "GameStateManager.h"
 
 
-void Missile::simulate(vector<GameObject*> gameObjects, map<int, MissileComponent> missiles, float elapsedTime)
+
+void Missile::simulate(vector<GameObject*> gameObjects, map<int, MissileComponent>* missiles, float elapsedTime)
 {
 	//MissileComponent* missile;
 
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		MissileComponent& missile = missiles[gameObjects[0]->GetId()];
+		MissileComponent& missile = missiles->at(gameObjects[i]->GetId());
+
+		missile.distanceTravelled += missile.speed * elapsedTime;
+		Vector2D direction = missile.GetTravellingDirection();
+		Point2D currentPosition = missile.origin + direction * missile.distanceTravelled;
+		gameObjects[i]->SetPosition(currentPosition);
+
+		/*
+		if (missile.distanceTravelled >= missile.GetDistanceFromOriginToTarget() || gameObjects[i]->IsDestroyed())
+		{
+			Explosion* explosion = new Explosion(this->GetPosition());
+			this->gameStateManager->AddGameObject(explosion);
+
+			// Destroy this object
+			this->ScheduleDelete();
+		}
+		*/
+	}
+}
+
+void Missile::draw(map<int, MissileComponent>* missiles)
+{
+	for (auto it = missiles->begin(); it != missiles->end(); ++it)
+	{
+		MissileComponent* missile = &it->second;
+
+		Vector2D direction = missile->GetTravellingDirection();
+		Point2D endPoint = missile->origin + direction * missile->distanceTravelled;
+
+		DrawLine(missile->origin, endPoint, missile->colour);
+
+		missile->alternateColour = (missile->alternateColour + 1) % 8;
+		int colourIndex = missile->alternateColour / 2;
+
+		Play::DrawPixel(endPoint, EXPLOSION_COLORS[colourIndex]);
+
+		// Draw Target
+		Play::DrawCircle(missile->target, 2, missile->colour);
 	}
 }
 
@@ -29,14 +67,17 @@ Missile::MissileComponent::MissileComponent(Play::Point2D origin, Play::Point2D 
 
 }
 
-/*
 Play::Vector2D Missile::MissileComponent::GetTravellingDirection()
 {
 	Vector2D direction = (this->target - this->origin);
 	direction.Normalize();
 	return direction;
 }
-*/
+
+float Missile::MissileComponent::GetDistanceFromOriginToTarget() const
+{
+	return (this->target - this->origin).Length();
+}
 
 /*
 Missile::Missile(Play::Point2D origin, Play::Point2D target, Play::Colour colour, float speed) :

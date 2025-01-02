@@ -37,8 +37,18 @@ void MissileBase::fireMissile(GameObject* base, MissileBaseComponent* component,
 		// 
 		
 		// Register in manager
-		//manager->AddGameObject(missile);
-		//manager->AddMissileBaseComponent(base);
+		manager->AddGameObject(missile);
+		Missile::MissileComponent* missileCmp = manager->AddMissileComponent(missile);
+
+		// Setup missile 
+		missileCmp->origin = base->GetPosition();
+		missileCmp->colour = Play::cBlue;
+		missileCmp->speed = component->missileSpeed;
+		missileCmp->target = target;
+
+		missileCmp->alternateColour = 0;
+		missileCmp->distanceTravelled = 0;
+
 		//base->gameStateManager->AddGameObject(missile, EObjectType::MISSILE);
 
 

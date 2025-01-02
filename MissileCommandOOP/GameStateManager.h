@@ -48,6 +48,8 @@ public:
 	void AddMissileBaseComponent(GameObject* gameObject);
 	std::map<int, MissileBase::MissileBaseComponent> GetMissileBaseComponets();
 
+	Missile::MissileComponent* AddMissileComponent(GameObject* gameObject);
+
 private:
 	int idToAssign = 0;
 
@@ -68,4 +70,5 @@ private:
 	// Components
 	std::map<int, const char*> spriteComponents;
 	std::map<int, MissileBase::MissileBaseComponent> missileBaseComponents;
+	std::map<int, Missile::MissileComponent> missileComponents;
 };

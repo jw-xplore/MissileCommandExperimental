@@ -9,19 +9,22 @@ namespace Missile
 
 	struct MissileComponent
 	{
-		Play::Colour colour;
-		Play::Point2D origin;
-		Play::Point2D target;
+		Colour colour;
+		Point2D origin;
+		Point2D target;
 		float distanceTravelled;
 		int alternateColour;
 		float speed;
 
 		MissileComponent();
 		MissileComponent(Play::Point2D origin, Play::Point2D target, Play::Colour colour, float speed);
-		//Vector2D GetTravellingDirection();
+
+		Vector2D GetTravellingDirection();
+		float GetDistanceFromOriginToTarget() const;
 	};
 
-	extern void simulate(vector<GameObject*> gameObjects, map<int, MissileComponent> missiles, float elapsedTime);
+	extern void simulate(vector<GameObject*> gameObjects, map<int, MissileComponent>* missiles, float elapsedTime);
+	extern void draw(map<int, MissileComponent>* missiles);
 }
 
 /*
