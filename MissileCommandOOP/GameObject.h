@@ -18,6 +18,8 @@ public:
 	// call to schedule the object for deletion.
 	void ScheduleDelete();
 
+	void SetId(int id);
+	int GetId();
 	EObjectType GetType();
 
 	friend class GameStateManager;
@@ -43,10 +45,12 @@ protected:
 	// set to true if the object should be deleted by the game state manager when time is right
 	bool scheduledDelete;
 
-	EObjectType type;
-
 	// All active game objects are in a linked list structure, managed by the game object manager.
 	//GameObject* nextActiveGameObject;
 	// This will be set to the game state manager when the object is attached to it.
 	GameStateManager* gameStateManager;
+
+private:
+	int id = -1;
+	EObjectType type;
 };

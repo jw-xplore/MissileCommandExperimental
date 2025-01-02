@@ -1,11 +1,30 @@
 #include "Reticle.h"
 //#include "Missile.h"
-//#include "MissileBase.h"
-//#include "GameStateManager.h"
+#include "MissileBase.h"
+#include "GameStateManager.h"
 
-void Reticle::simulate(vector<GameObject*> reticles, float elapsedTime)
+void Reticle::simulate(GameObject* reticle, GameStateManager* manager, float elapsedTime)
 {
-	reticles[0]->SetPosition(Input::GetMousePos());
+	reticle->SetPosition(Input::GetMousePos());
+
+	// Fire 
+	if (Play::Input::GetMouseDown(Play::Input::MouseButton::BUTTON_LEFT) && !LBM_PRESSED)
+	{
+		using namespace MissileBase;
+
+		LBM_PRESSED = true;
+
+		GameObject* closestBase = getClosestMissileBase(reticle->GetPosition(), manager->GetGameObjectsOfType(EObjectType::MISSILE_BASE), reticle);
+
+		std::map<int, MissileBase::MissileBaseComponent> baseCmps = manager->GetMissileBaseComponets();
+		MissileBaseComponent* comp = &baseCmps[closestBase->GetId()];
+
+		if (closestBase != nullptr)
+			MissileBase::fireMissile(closestBase, comp, manager, reticle->GetPosition());
+
+	}
+	if (!Play::Input::GetMouseDown(Play::Input::MouseButton::BUTTON_LEFT))
+		LBM_PRESSED = false;
 }
 
 void Reticle::draw(vector<GameObject*> reticles)
@@ -15,9 +34,23 @@ void Reticle::draw(vector<GameObject*> reticles)
 	DrawLine(reticles[0]->GetPosition() + Vector2D(0, reticleHalfSize), reticles[0]->GetPosition() + Vector2D(0, -reticleHalfSize), cGreen);
 }
 
-GameObject* Reticle::getClosestMissileBase()
+GameObject* Reticle::getClosestMissileBase(Play::Point2D targetPosition, vector<GameObject*> bases, GameObject* reticle)
 {
-	return nullptr;
+	GameObject* closestBase = nullptr;
+	float closestDistance = 9999999999.0f;
+
+	for (int i = 0; i < bases.size(); i++)
+	{
+		// the object is a base, check for the closest
+		float distance = (bases[i]->GetPosition() - reticle->GetPosition()).Length();
+		if (distance < closestDistance)
+		{
+			closestDistance = distance;
+			closestBase = bases[i];
+		}
+	}
+
+	return closestBase;
 }
 
 /*

@@ -1,7 +1,6 @@
 #include <cassert>
 #include "GameStateManager.h"
 #include "GameObject.h"
-#include "City.h"
 #include "MissileBase.h"
 
 GameStateManager::GameStateManager() : worldHeight(100), worldWidth(100)
@@ -53,8 +52,32 @@ void GameStateManager::Update(float elapsedTime)
 	for (auto it = m_GameObjects.begin(); it != m_GameObjects.end(); ++it)
 	{
 		std::vector<GameObject*> typeObjects = it->second;
-		this->simulateFncMap.at(it->first)(typeObjects, elapsedTime);
-		this->drawFncMap.at(it->first)(typeObjects);
+
+		switch (it->first)
+		{
+		case EObjectType::RETICLE:
+		{
+			Reticle::simulate(typeObjects[0], this, elapsedTime);
+			Reticle::draw(typeObjects);
+			break;
+		}
+
+		case EObjectType::CITY:
+		{
+			SpriteDraw::drawSprite(typeObjects, spriteComponents);
+			break;
+		}
+
+		case EObjectType::MISSILE_BASE:
+		{
+			SpriteDraw::drawSprite(typeObjects, spriteComponents);
+			break;
+		}
+
+		}
+
+		//this->simulateFncMap.at(it->first)(typeObjects, elapsedTime);
+		//this->drawFncMap.at(it->first)(typeObjects);
 	}
 }
 
@@ -65,8 +88,14 @@ void GameStateManager::SetWorldSize(int width, int height)
 }
 
 // Add object to array with specific class type of GameObject
-void GameStateManager::AddGameObject(GameObject* gameObject, EObjectType type)
+void GameStateManager::AddGameObject(GameObject* gameObject)
 {
+	// Setup type and id
+	EObjectType type = gameObject->GetType();
+	gameObject->SetId(idToAssign);
+	idToAssign++;
+
+	// Add in list
 	this->m_GameObjects[type].push_back(gameObject);
 	gameObject->gameStateManager = this;
 }
@@ -140,7 +169,47 @@ void GameStateManager::NewGame()
 
 	// Reticle
 	GameObject* reticle = new GameObject(EObjectType::RETICLE);
-	this->AddGameObject(reticle, EObjectType::RETICLE);
+	this->AddGameObject(reticle);
+
+	// Cities
+	float offset = this->worldWidth / 7;
+
+	for (size_t i = 0; i < 6; i++)
+	{
+		GameObject* city = new GameObject(EObjectType::CITY);
+		city->SetPosition(Play::Point2D(float(i) * offset + offset, GROUND_LEVEL));
+		this->AddGameObject(city);
+
+		spriteComponents[city->GetId()] = SpriteConstants::SPR_CITY;
+	}
+
+	// Bases
+	offset = ((float)this->worldWidth / 7.0f);
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		GameObject* base = new GameObject(EObjectType::MISSILE_BASE);
+		base->SetPosition(Play::Point2D((offset * i * 2.0f) + offset * 1.4f, GROUND_LEVEL));
+		this->AddGameObject(base);
+
+		spriteComponents[base->GetId()] = SpriteConstants::SPR_MISSILE_BASE;
+	}
+}
+
+std::vector<GameObject*> GameStateManager::GetGameObjectsOfType(EObjectType type)
+{
+	return m_GameObjects[type];
+}
+
+void GameStateManager::AddMissileBaseComponent(GameObject* gameObject)
+{
+	using namespace MissileBase;
+	missileBaseComponents[gameObject->GetId()] = MissileBaseComponent();
+}
+
+std::map<int, MissileBase::MissileBaseComponent> GameStateManager::GetMissileBaseComponets()
+{
+	return missileBaseComponents;
 }
 
 // Missiles management

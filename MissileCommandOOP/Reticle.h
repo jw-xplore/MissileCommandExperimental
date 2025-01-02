@@ -25,10 +25,12 @@ namespace Reticle
 	using namespace Play;
 	using namespace std;
 
-	extern void simulate(vector<GameObject*> reticles, float elapsedTime);
+	static bool LBM_PRESSED = false;
+
+	extern void simulate(GameObject* reticle, GameStateManager* manager, float elapsedTime);
 	extern void draw(vector<GameObject*> reticles);
 	
-	extern GameObject* getClosestMissileBase();
+	extern GameObject* getClosestMissileBase(Play::Point2D targetPosition, vector<GameObject*> bases, GameObject* reticle);
 
 	/*
 	void draw(GameObject& reticle)

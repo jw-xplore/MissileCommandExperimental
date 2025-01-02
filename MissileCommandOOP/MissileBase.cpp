@@ -2,6 +2,51 @@
 #include "Missile.h"
 #include "GameStateManager.h"
 
+void MissileBase::simulate(vector<GameObject*> bases, map<int, MissileBaseComponent> componets, float elapsedTime)
+{
+	for (int i = 0; i < bases.size(); i++)
+	{
+		MissileBaseComponent baseCmp = componets[bases[i]->GetId()];
+
+		if (baseCmp.missileCount < baseCmp.maxMissiles)
+		{
+			// Progress reload time
+			baseCmp.timeSinceReload += elapsedTime;
+
+			// Reload
+			if (baseCmp.timeSinceReload > baseCmp.reloadTime)
+			{
+				baseCmp.missileCount++;
+				baseCmp.timeSinceReload = 0;
+			}
+		}
+	}
+}
+
+void MissileBase::fireMissile(GameObject* base, MissileBaseComponent* component, GameStateManager* manager, Point2D target)
+{
+	//if (this->IsDestroyed())
+		//return;
+
+	if (component->missileCount > 0)
+	{
+		GameObject* missile = new GameObject(EObjectType::MISSILE);
+
+
+		//(this->GetPosition(), target, Play::cBlue, this->missileSpeed);
+		// 
+		
+		// Register in manager
+		//manager->AddGameObject(missile);
+		//manager->AddMissileBaseComponent(base);
+		//base->gameStateManager->AddGameObject(missile, EObjectType::MISSILE);
+
+
+		component->missileCount--;
+		Play::PlayAudio("Fire");
+	}
+}
+
 /*
 MissileBase::MissileBase() :
 	maxMissiles(10),

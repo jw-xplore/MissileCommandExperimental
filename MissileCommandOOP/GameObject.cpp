@@ -32,6 +32,17 @@ void GameObject::Simulate(float elapsedTime)
 }
 */
 
+void GameObject::SetId(int id)
+{
+	if (this->id == -1 && id > 0)
+		this->id = id;
+}
+
+int GameObject::GetId()
+{
+	return id;
+}
+
 EObjectType GameObject::GetType()
 {
 	return type;

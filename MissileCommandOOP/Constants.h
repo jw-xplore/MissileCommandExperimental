@@ -26,3 +26,10 @@ const Play::Colour EXPLOSION_COLORS[4] = {
 		Play::cBlue,
 		Play::cYellow
 };
+
+// Sprites 
+namespace SpriteConstants
+{
+	const char* const SPR_MISSILE_BASE = "missile_base";
+	const char* const SPR_CITY = "city";
+}

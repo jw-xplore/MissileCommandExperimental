@@ -1,8 +1,44 @@
-/*
 #include "Missile.h"
 #include "Explosion.h"
 #include "GameStateManager.h"
 
+
+void Missile::simulate(vector<GameObject*> gameObjects, map<int, MissileComponent> missiles, float elapsedTime)
+{
+	//MissileComponent* missile;
+
+	for (int i = 0; i < gameObjects.size(); i++)
+	{
+		MissileComponent& missile = missiles[gameObjects[0]->GetId()];
+	}
+}
+
+Missile::MissileComponent::MissileComponent() :
+	colour(colour)
+{
+}
+
+Missile::MissileComponent::MissileComponent(Play::Point2D origin, Play::Point2D target, Play::Colour colour, float speed) :
+	origin(origin),
+	target(target),
+	colour(colour),
+	distanceTravelled(0),
+	alternateColour(0),
+	speed(speed)
+{
+
+}
+
+/*
+Play::Vector2D Missile::MissileComponent::GetTravellingDirection()
+{
+	Vector2D direction = (this->target - this->origin);
+	direction.Normalize();
+	return direction;
+}
+*/
+
+/*
 Missile::Missile(Play::Point2D origin, Play::Point2D target, Play::Colour colour, float speed) :
 	Destroyable(1),
 	origin(origin),
