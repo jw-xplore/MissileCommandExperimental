@@ -1,8 +1,6 @@
 #include "Missile.h"
-#include "Explosion.h"
+//#include "Explosion.h"
 #include "GameStateManager.h"
-
-
 
 void Missile::simulate(vector<GameObject*> gameObjects, map<int, MissileComponent>* missiles, GameStateManager* manager, float elapsedTime)
 {

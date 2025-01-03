@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
-#include "Destroyable.h"
+//#include "Destroyable.h"
+#include "GameObject.h"
 
 namespace Missile
 {
@@ -12,9 +13,9 @@ namespace Missile
 		Colour colour;
 		Point2D origin;
 		Point2D target;
-		float distanceTravelled = 0;
-		int alternateColour = 0;
-		float speed = 0;
+		float distanceTravelled;
+		int alternateColour;
+		float speed;
 
 		MissileComponent();
 		MissileComponent(Play::Point2D origin, Play::Point2D target, Play::Colour colour, float speed);
@@ -25,21 +26,6 @@ namespace Missile
 
 	extern void simulate(vector<GameObject*> gameObjects, map<int, MissileComponent>* missiles, GameStateManager* manager, float elapsedTime);
 	extern void draw(map<int, MissileComponent>* missiles);
-}
-
-namespace Expl
-{
-	using namespace std;
-	using namespace Play;
-
-	struct ExplosionTest
-	{
-		Point2D position;
-		float currentRadius;
-		float maxRadius;
-		int alternateColour;
-		bool hasExploded;
-	};
 }
 
 /*

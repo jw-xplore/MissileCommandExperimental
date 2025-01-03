@@ -1,10 +1,11 @@
-#include "GameStateManager.h"
-#include "Destroyable.h"
+#include "Explosion.h"
+//#include "GameStateManager.h"
+//#include "Destroyable.h"
 #include <vector>
 
-void Explosion::simulate(vector<GameObject*> gameObjects, map<int, ExplosionComponent>* explosions, GameStateManager* manager, float elapsedTime)
+
+void Explosion::simulate(std::vector<GameObject*> gameObjects, std::map<int, ExplosionComponent>* explosions, GameStateManager* manager, float elapsedTime)
 {
-	/*
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
 		ExplosionComponent* explosion = &explosions->at(gameObjects[i]->GetId());
@@ -22,12 +23,10 @@ void Explosion::simulate(vector<GameObject*> gameObjects, map<int, ExplosionComp
 			gameObjects[i]->ScheduleDelete();
 		}
 	}
-	*/
 }
 
-void Explosion::draw(map<int, ExplosionComponent>* explosions)
+void Explosion::draw(std::map<int, ExplosionComponent>* explosions)
 {
-	/*
 	for (auto it = explosions->begin(); it != explosions->end(); ++it)
 	{
 		ExplosionComponent* explosion = &it->second;
@@ -37,17 +36,21 @@ void Explosion::draw(map<int, ExplosionComponent>* explosions)
 
 		Play::DrawCircle(explosion->position, explosion->currentRadius, EXPLOSION_COLORS[colourIndex]);
 	}
-	*/
 }
 
+
+
+
+/*
 Explosion::ExplosionComponent::ExplosionComponent()
 {
 	position = Point2D(0, 0);
 	maxRadius = 16;
-	currentRadius = 8;
+	currentRadius = maxRadius * 0.5;
 	alternateColour = 0;
 	hasExploded = false;
 }
+*/
 
 /*
 void Explosion::explode(GameObject* gameObject, ExplosionComponent* explosion, map<GameObject*, int>* healthComponents)

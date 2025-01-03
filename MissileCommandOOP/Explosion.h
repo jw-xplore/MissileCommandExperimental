@@ -1,12 +1,14 @@
 #pragma once
-#include "GameStateManager.h"
+//#include "GameStateManager.h"
 #include "GameObject.h"
 #include "Play.h"
 
 namespace Explosion
 {
-	using namespace std;
+	//using namespace std;
 	using namespace Play;
+
+	struct ExplosionComponent;
 
 	struct ExplosionComponent
 	{
@@ -16,14 +18,16 @@ namespace Explosion
 		int alternateColour;
 		bool hasExploded;
 
-		ExplosionComponent();
+		//ExplosionComponent();
 	};
 
-	extern void simulate(vector<GameObject*> gameObjects, map<int, ExplosionComponent>* explosions, GameStateManager* manager, float elapsedTime);
-	extern void draw(map<int, ExplosionComponent>* explosions);
+	extern void simulate(std::vector<GameObject*> gameObjects, std::map<int, ExplosionComponent>* explosions, GameStateManager* manager, float elapsedTime);
+	extern void draw(std::map<int, ExplosionComponent>* explosions);
 
 	//extern void explode(GameObject* gameObject, ExplosionComponent* explosion, map<GameObject*, int>* healthComponents);
 }
+
+
 
 /*
 #include "GameObject.h"
