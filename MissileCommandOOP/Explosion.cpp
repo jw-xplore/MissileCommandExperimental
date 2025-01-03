@@ -1,7 +1,63 @@
-#include "Explosion.h"
 #include "GameStateManager.h"
 #include "Destroyable.h"
 #include <vector>
+
+void Explosion::simulate(vector<GameObject*> gameObjects, map<int, ExplosionComponent>* explosions, GameStateManager* manager, float elapsedTime)
+{
+	/*
+	for (int i = 0; i < gameObjects.size(); i++)
+	{
+		ExplosionComponent* explosion = &explosions->at(gameObjects[i]->GetId());
+
+		if (!explosion->hasExploded)
+		{
+			//Explode();
+		}
+
+		// simulate explosion for x seconds, then schedule for deletion.
+		const float expansionSpeed = ((explosion->maxRadius / 2.0f)) * elapsedTime * 12.0f;
+		explosion->currentRadius = std::fminf(explosion->currentRadius + expansionSpeed, explosion->maxRadius);
+		if (explosion->currentRadius == explosion->maxRadius)
+		{
+			gameObjects[i]->ScheduleDelete();
+		}
+	}
+	*/
+}
+
+void Explosion::draw(map<int, ExplosionComponent>* explosions)
+{
+	/*
+	for (auto it = explosions->begin(); it != explosions->end(); ++it)
+	{
+		ExplosionComponent* explosion = &it->second;
+
+		explosion->alternateColour = (explosion->alternateColour + 1) % 8;
+		int colourIndex = explosion->alternateColour / 2;
+
+		Play::DrawCircle(explosion->position, explosion->currentRadius, EXPLOSION_COLORS[colourIndex]);
+	}
+	*/
+}
+
+Explosion::ExplosionComponent::ExplosionComponent()
+{
+	position = Point2D(0, 0);
+	maxRadius = 16;
+	currentRadius = 8;
+	alternateColour = 0;
+	hasExploded = false;
+}
+
+/*
+void Explosion::explode(GameObject* gameObject, ExplosionComponent* explosion, map<GameObject*, int>* healthComponents)
+{
+	Play::PlayAudio("Explode");
+
+	//float fastDist = explosion->maxRadius * 2; // Used for quick vicinity check
+	//Point2D healthCmpPos;
+}
+*/
 
 /*
 Explosion::Explosion(Play::Point2D position) :

@@ -10,6 +10,7 @@
 #include "Reticle.h"
 #include "SpriteDraw.h"
 #include "MissileBase.h"
+#include "Explosion.h"
 
 // Forward declarations
 class GameObject;
@@ -50,6 +51,8 @@ public:
 
 	Missile::MissileComponent* AddMissileComponent(GameObject* gameObject);
 
+	//Explosion::ExplosionComponent* AddExplosionComponent(GameObject* gameObject);
+
 private:
 	int idToAssign = 0;
 
@@ -71,4 +74,8 @@ private:
 	std::map<int, const char*> spriteComponents;
 	std::map<int, MissileBase::MissileBaseComponent> missileBaseComponents;
 	std::map<int, Missile::MissileComponent> missileComponents;
+	std::map<int, int> healthComponents;
+	//std::map<int, Explosion::ExplosionComponent> explosionComponent;
+	//std::map<int, Explosion::ExplosionComponent> explosionComponents;
+	std::map<int, Expl::ExplosionTest> explTestMap;
 };

@@ -38,9 +38,15 @@ void GameStateManager::Update(float elapsedTime)
 		{
 			if (typeObjects[i]->scheduledDelete)
 			{
+				// Remove components 
+				spriteComponents.erase(typeObjects[i]->id);
+				missileBaseComponents.erase(typeObjects[i]->id);
+				missileComponents.erase(typeObjects[i]->id);
+				healthComponents.erase(typeObjects[i]->id);
+
+				// Remove object
 				delete it->second[i];
 				it->second.erase(it->second.begin() + i);
-				continue;
 			}
 		}
 
@@ -76,8 +82,15 @@ void GameStateManager::Update(float elapsedTime)
 
 		case EObjectType::MISSILE:
 		{
-			Missile::simulate(typeObjects, &missileComponents, elapsedTime);
+			Missile::simulate(typeObjects, &missileComponents, this, elapsedTime);
 			Missile::draw(&missileComponents);
+			break;
+		}
+
+		case EObjectType::EXPLOSION:
+		{
+			//Explosion::simulate(typeObjects, &explosionComponents, this, elapsedTime);
+			//Explosion::draw(&explosionComponents);
 			break;
 		}
 
@@ -188,6 +201,7 @@ void GameStateManager::NewGame()
 		this->AddGameObject(city);
 
 		spriteComponents[city->GetId()] = SpriteConstants::SPR_CITY;
+		healthComponents[city->GetId()] = 100;
 	}
 
 	// Bases
@@ -200,6 +214,7 @@ void GameStateManager::NewGame()
 		this->AddGameObject(base);
 
 		spriteComponents[base->GetId()] = SpriteConstants::SPR_MISSILE_BASE;
+		healthComponents[base->GetId()] = 100;
 	}
 }
 
@@ -227,6 +242,17 @@ Missile::MissileComponent* GameStateManager::AddMissileComponent(GameObject* gam
 
 	return &missileComponents[gameObject->GetId()];
 }
+
+/*
+Explosion::ExplosionComponent* GameStateManager::AddExplosionComponent(GameObject* gameObject)
+{
+	using namespace Explosion;
+	ExplosionComponent explosion;
+	explosionComponents[gameObject->GetId()] = explosion;
+
+	return &explosionComponents[gameObject->GetId()];
+}
+*/
 
 // Missiles management
 

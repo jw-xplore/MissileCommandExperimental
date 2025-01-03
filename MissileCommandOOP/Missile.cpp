@@ -4,7 +4,7 @@
 
 
 
-void Missile::simulate(vector<GameObject*> gameObjects, map<int, MissileComponent>* missiles, float elapsedTime)
+void Missile::simulate(vector<GameObject*> gameObjects, map<int, MissileComponent>* missiles, GameStateManager* manager, float elapsedTime)
 {
 	//MissileComponent* missile;
 
@@ -16,6 +16,16 @@ void Missile::simulate(vector<GameObject*> gameObjects, map<int, MissileComponen
 		Vector2D direction = missile.GetTravellingDirection();
 		Point2D currentPosition = missile.origin + direction * missile.distanceTravelled;
 		gameObjects[i]->SetPosition(currentPosition);
+
+		// Destroy missile on reaching target
+		if (missile.distanceTravelled >= missile.GetDistanceFromOriginToTarget())
+		{
+			GameObject* explosion = new GameObject(EObjectType::EXPLOSION);
+			manager->AddGameObject(explosion);
+			//manager->AddExplosionComponent(explosion);
+
+			gameObjects[i]->ScheduleDelete();
+		}
 
 		/*
 		if (missile.distanceTravelled >= missile.GetDistanceFromOriginToTarget() || gameObjects[i]->IsDestroyed())

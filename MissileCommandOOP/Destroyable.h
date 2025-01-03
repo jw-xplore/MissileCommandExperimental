@@ -6,6 +6,15 @@
 * Can be kept
 */
 
+namespace Destroyable
+{
+	struct DestroyableComponent
+	{
+		int health;
+	};
+}
+
+/*
 class Destroyable : public GameObject
 {
 public:
@@ -22,4 +31,4 @@ public:
 private:
 	int health;
 };
-
+*/
